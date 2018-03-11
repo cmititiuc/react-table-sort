@@ -41,7 +41,7 @@ class App extends Component {
       });
     } else {
       this.setState({
-        sortColumn: 'none',
+        sortColumn: column === this.state.sortColumn ? 'none' : column,
         sortDirection: column === this.state.sortColumn ? 'none' : 'asc',
         stats: STATS.slice()
       });
