@@ -43,3 +43,8 @@ td {
 td.number {
   text-align: right;
 }
+
+.total td {
+  font-weight: bold;
+  background-color: lightgrey;
+}

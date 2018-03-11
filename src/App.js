@@ -56,9 +56,9 @@ class App extends Component {
     let marker = '';
     if (column === this.state.sortColumn) {
       if (this.state.sortDirection === 'asc')
-        marker = '^';
+        marker = '▴';
       else if (this.state.sortDirection === 'desc')
-        marker = 'v';
+        marker = '▾';
       return <span>{marker}</span>;
     }
     return null;
@@ -69,10 +69,10 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">React Table Sort Example</h1>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          Click on any of the column headers to sort by that column
         </p>
         <table>
           <tbody>
@@ -96,7 +96,7 @@ class App extends Component {
                 </tr>
               );
             })}
-            <tr><td>TOTAL</td>
+            <tr className="total"><td>TOTAL</td>
               <td>{this.state.stats.reduce(function(acc, stat) {
                 return acc + stat[2016];
               }, 0)}</td>
