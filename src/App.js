@@ -18,6 +18,7 @@ class App extends Component {
 
     this.handleSort = this.handleSort.bind(this);
     this.onClick = this.onClick.bind(this);
+    this.sort = this.sort.bind(this);
 
     this.state = {
       sortColumn: 'none',
@@ -26,24 +27,37 @@ class App extends Component {
     }
   }
 
+  sort(direction, column) {
+    if (direction === 'desc')
+      return this.state.stats.sort((a, b) => a[column] < b[column]);
+    else if (direction === 'asc')
+      return this.state.stats.sort((a, b) => a[column] > b[column]);
+
+    return STATS.slice();
+  }
+
   handleSort(column) {
-    if (this.state.sortDirection === 'none') {
+    const { sortDirection, sortColumn, stats } = this.state
+        , { sort } = this
+        ;
+
+    if (sortDirection === 'none') {
       this.setState({
         sortColumn: column,
         sortDirection: 'asc',
-        stats: this.state.stats.sort((a, b) => a[column] > b[column])
+        stats: sort('asc', column)
       });
-    } else if (this.state.sortDirection === 'asc') {
+    } else if (sortDirection === 'asc') {
       this.setState({
         sortColumn: column,
-        sortDirection: column === this.state.sortColumn ? 'desc' : 'asc',
-        stats: this.state.stats.sort((a, b) => a[column] < b[column])
+        sortDirection: column === sortColumn ? 'desc' : 'asc',
+        stats: column === sortColumn ? sort('desc', column) : sort('asc', column)
       });
     } else {
       this.setState({
-        sortColumn: column === this.state.sortColumn ? 'none' : column,
-        sortDirection: column === this.state.sortColumn ? 'none' : 'asc',
-        stats: STATS.slice()
+        sortColumn: column === sortColumn ? 'none' : column,
+        sortDirection: column === sortColumn ? 'none' : 'asc',
+        stats: column === sortColumn ? sort() : sort('asc', column)
       });
     }
   }
@@ -54,14 +68,12 @@ class App extends Component {
 
   renderSortMarker(column) {
     let marker = '';
-    if (column === this.state.sortColumn) {
-      if (this.state.sortDirection === 'asc')
-        marker = '▴';
-      else if (this.state.sortDirection === 'desc')
-        marker = '▾';
-      return <span>{marker}</span>;
-    }
-    return null;
+    if (this.state.sortDirection === 'asc')
+      marker = '▴';
+    else if (this.state.sortDirection === 'desc')
+      marker = '▾';
+
+    return (column === this.state.sortColumn ? <span>{marker}</span> : null);
   }
 
   render() {
